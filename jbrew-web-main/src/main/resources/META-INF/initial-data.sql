@@ -1,0 +1,69 @@
+-- Crear tabla PERMISSION
+CREATE TABLE IF NOT EXISTS PERMISSION (
+                                          ID BIGINT PRIMARY KEY,
+                                          RESOURCE VARCHAR(255) NOT NULL,
+    ACTION VARCHAR(50) NOT NULL
+    );
+
+-- Crear tabla ROLE
+CREATE TABLE IF NOT EXISTS ROLE (
+                                    ID BIGINT PRIMARY KEY,
+                                    NAME VARCHAR(50) NOT NULL
+    );
+
+-- Crear tabla USER
+CREATE TABLE IF NOT EXISTS USER (
+                                    ID BIGINT PRIMARY KEY,
+                                    NAME VARCHAR(100) NOT NULL,
+    PASSWORD VARCHAR(255) NOT NULL
+    );
+
+-- Crear tabla USER_ROLE (relación muchos a muchos)
+CREATE TABLE IF NOT EXISTS USER_ROLE (
+                                         USER_ID BIGINT NOT NULL,
+                                         ROLE_ID BIGINT NOT NULL,
+                                         PRIMARY KEY (USER_ID, ROLE_ID),
+    FOREIGN KEY (USER_ID) REFERENCES USER(ID),
+    FOREIGN KEY (ROLE_ID) REFERENCES ROLE(ID)
+    );
+
+-- Crear tabla ROLE_PERMISSION (relación muchos a muchos)
+CREATE TABLE IF NOT EXISTS ROLE_PERMISSION (
+                                               ROLE_ID BIGINT NOT NULL,
+                                               PERMISSION_ID BIGINT NOT NULL,
+                                               PRIMARY KEY (ROLE_ID, PERMISSION_ID),
+    FOREIGN KEY (ROLE_ID) REFERENCES ROLE(ID),
+    FOREIGN KEY (PERMISSION_ID) REFERENCES PERMISSION(ID)
+    );
+
+-- Insertar datos (tu contenido actual)
+INSERT INTO PERMISSION (ID, RESOURCE, ACTION) VALUES (1, '/security/userList.xhtml', 'ALL');
+-- ... (resto de tus INSERT)
+
+INSERT INTO PERMISSION (ID, RESOURCE, ACTION) VALUES (1, '/security/userList.xhtml', 'ALL');
+INSERT INTO PERMISSION (ID, RESOURCE, ACTION) VALUES (2, '/security/userList.xhtml', 'READ');
+INSERT INTO PERMISSION (ID, RESOURCE, ACTION) VALUES (3, '/security/userList.xhtml', 'WRITE');
+INSERT INTO PERMISSION (ID, RESOURCE, ACTION) VALUES (4, '/security/userList.xhtml', 'DELETE');
+INSERT INTO PERMISSION (ID, RESOURCE, ACTION) VALUES (5, '/security/userEdit.xhtml', 'READ');
+
+INSERT INTO PERMISSION (ID, RESOURCE, ACTION) VALUES (6, '/cashier/orders.xhtml', 'READ');
+INSERT INTO PERMISSION (ID, RESOURCE, ACTION) VALUES (7, '/cashier/orders.xhtml', 'WRITE');
+INSERT INTO PERMISSION (ID, RESOURCE, ACTION) VALUES (8, '/cashier/ordersEdit.xhtml', 'READ');
+
+INSERT INTO ROLE (ID, NAME) VALUES (1, 'ADMIN');
+INSERT INTO ROLE (ID, NAME) VALUES (2, 'CAJERO');
+
+INSERT INTO USER (ID, NAME, PASSWORD) VALUES (1, 'admin', 'uVQoLxtZvlhBuamIlWRLGQ==');
+
+INSERT INTO USER_ROLE (USER_ID, ROLE_ID) VALUES (1, 1);
+
+INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES (1, 1);
+INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES (1, 2);
+INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES (1, 3);
+INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES (1, 4);
+INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES (1, 5);
+INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES (2, 6);
+INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES (2, 7);
+INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES (2, 8);
+
+COMMIT ;
